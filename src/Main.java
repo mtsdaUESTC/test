@@ -199,7 +199,41 @@ public class Main {
     }
     //LeetCode 109 从有序链表建立平衡二叉树
     public TreeNode sortedListToBST(ListNode head) {//leetcode 109 从有序链表建立平衡二叉树
-
+        if(head == null) return null;
+        ListNode mid = findMiddle(head);
+        TreeNode node = new TreeNode(mid.val);
+        if(head == mid) return node; //注意这里！是和数组不一样的地方。
+        node.left = sortedListToBST(head);
+        node.right = sortedListToBST(mid.next);
+        return node;
+    }
+    public ListNode findMiddle(ListNode head){
+        ListNode prePtr = null;
+        ListNode slowPtr = head;
+        ListNode fastPtr = head;
+        while(fastPtr!=null && fastPtr.next!=null){
+            prePtr = slowPtr;
+            slowPtr = slowPtr.next;
+            fastPtr = fastPtr.next.next;
+        }
+        if(prePtr != null){
+            prePtr.next = null;
+        }
+        return slowPtr;
+    }
+    //leetcode 110 判断是否为高度平衡的平衡二叉树
+    public boolean isBalanced(TreeNode root) {
+        return depth(root) >= 0;
+    }
+    public int depth(TreeNode root){
+        if(root == null) return 0;
+        int left = depth(root.left);
+        int right = depth(root.right);
+        if(left>=0 && right>=0 && Math.abs(left-right)<=1){
+            return Math.max(left,right) + 1;
+        }else{
+            return -1;
+        }
     }
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(0);
