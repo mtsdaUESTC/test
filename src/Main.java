@@ -137,7 +137,70 @@ public class Main {
         root.right = helper(index+1,in_right);
         return root;
     }
+    //
+    //
+    //
+    //leetcode 106 从中序与后序遍历构造二叉树  没通过
+    int []postorder;
+    int post_indx = 0;
+    HashMap<Integer,Integer> pidx_map = new HashMap<>();
+    public TreeNode buildTreePost(int[] inorder, int[] postorder) {
+        this.postorder = postorder;
+        this.inorder = inorder;
+        this.post_indx = postorder.length-1;
+        int idx = 0;
+        for(Integer val : inorder) pidx_map.put(val,idx++);
+        return helperPost(0,inorder.length);
+    }
+    public TreeNode helperPost(int in_left,int in_right){
+        if(in_left == in_right) return null;
+        TreeNode root = new TreeNode(postorder[post_indx]);
+        int index = pidx_map.get(postorder[post_indx]);
+        post_indx--;
+        root.right = helperPost(index+1,in_right);
+        root.left = helper(in_left,index);
+        return root;
+    }
+    public static List<List<Integer>> levelOrderBottom(TreeNode root) { //leetcode 107 层次遍历2
+        List<List<Integer>>res = new ArrayList<>();
+        if(root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            List list = new ArrayList();
+            int count = queue.size();
+            while(count > 0){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if(node.left!=null) queue.add(node.left);
+                if(node.right!=null) queue.add(node.right);
+                count--;
+            }
+            res.add(0,list);
+        }
+        return res;
+    } //LeetCode 107 二叉树的层次遍历2
+    //
+    //
+    //
+    //leetcode 108 从有序数组建立平衡二叉树
+    int nums[];//｛-10，-3，0，5，9｝
+    public TreeNode sortedArrayToBST(int[] nums) {// LeetCode 108将有序数组转化为二叉搜索树
+        this.nums = nums;
+        return helperToBst(0,nums.length-1);
+    }
+    public  TreeNode helperToBst(int left, int right){
+        if (left == right) return null;
+        int index = (right+left)/2; //注意迭代的时候是（left+right）/2
+        TreeNode node = new TreeNode(nums[index]);
+        node.left = helperToBst(left,index);
+        node.right = helperToBst(index+1,right);
+        return node;
+    }
+    //LeetCode 109 从有序链表建立平衡二叉树
+    public TreeNode sortedListToBST(ListNode head) {//leetcode 109 从有序链表建立平衡二叉树
 
+    }
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(0);
         TreeNode t2 = new TreeNode(1);
@@ -155,8 +218,9 @@ public class Main {
 //        System.out.println(isSymmetric(t1));
 //        System.out.println(maxDepth(t1));
 //        System.out.println("sss");
-        System.out.println(zigzagLevelOrder(t1));
+//        System.out.println(zigzagLevelOrder(t1));
     }
+
 }
 class TreeNode {
       int val;
@@ -169,3 +233,8 @@ class TreeNode {
           this.right = right;
       }
  }
+ class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) { val = x; }
+}
