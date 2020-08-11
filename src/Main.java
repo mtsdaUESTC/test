@@ -198,9 +198,9 @@ public class Main {
         return node;
     }
     //LeetCode 109 从有序链表建立平衡二叉树
-    public TreeNode sortedListToBST(ListNode head) {//leetcode 109 从有序链表建立平衡二叉树
-
-    }
+//    public TreeNode sortedListToBST(ListNode head) {//leetcode 109 从有序链表建立平衡二叉树
+//
+//    }
     public static void main(String[] args) {
         TreeNode t1 = new TreeNode(0);
         TreeNode t2 = new TreeNode(1);
