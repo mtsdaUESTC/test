@@ -1,4 +1,4 @@
-
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -64,20 +64,8 @@ public class Main {
         }
         return res;
     }  //后序遍历
-    public boolean isValidBST(TreeNode root) {
-        return isValidBstHelp(root,null,null);
-    }//leetcode98 判断是否是二叉搜索树
-    public boolean isValidBstHelp(TreeNode root,Integer lower,Integer upper){//leetcode98辅助
-        if(root == null) return true;
-        Integer val = root.val;
-        if(lower!=null && lower >= val) return false;
-        if(upper!=null && upper <= val) return false;
-        if(!isValidBstHelp(root.right,val,upper)) return false;
-        if(!isValidBstHelp(root.left,lower,val)) return false;
-        return true;
-    }
-    public static boolean isSameTree(TreeNode p, TreeNode q) {  //leetcode100判断是否是同一个二叉树
-        if(p == null && q == null) return true; //递归结束点
+    public static boolean isSameTree(TreeNode p, TreeNode q) {  //判断是否是同一个二叉树
+        if(q == null && q == null) return true; //递归结束点
         if(p!=null && q!=null && p.val == q.val){ //往下递归的条件
             return isSameTree(p.left,q.left)&&isSameTree(p.right,q.right); //递归点
         }else{
@@ -151,6 +139,9 @@ public class Main {
         root.right = helper(index+1,in_right);
         return root;
     }
+    //
+    //
+    //
     //leetcode 106 从中序与后序遍历构造二叉树
     int []postorder;
     int post_indx = 0;
@@ -191,6 +182,9 @@ public class Main {
         }
         return res;
     } //LeetCode 107 二叉树的层次遍历2
+    //
+    //
+    //
     //leetcode 108 从有序数组建立平衡二叉树
     int nums[];//｛-10，-3，0，5，9｝
     public TreeNode sortedArrayToBST(int[] nums) {// LeetCode 108将有序数组转化为二叉搜索树
@@ -562,9 +556,7 @@ public class Main {
     //leetcode 450 删除二叉搜索树中的节点
     public int successor(TreeNode root){
          root = root.right;
-         while(root.left!=null) {
-             root = root.left;
-         }
+         while(root.left!=null) root = root.left;
          return root.val;
     }
     public int predecessor(TreeNode root){
