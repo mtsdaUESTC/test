@@ -1,4 +1,4 @@
-import sun.awt.IconInfo;
+
 
 import java.util.*;
 
@@ -104,10 +104,58 @@ public class DynamicProgramming {
     }
     return res;
   }
+
+  /**编辑距离
+   * 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+   *
+   * 你可以对一个单词进行如下三种操作：
+   *
+   * 插入一个字符
+   * 删除一个字符
+   * 替换一个字符
+   *
+   * 示例 1：
+   *
+   * 输入：word1 = "horse", word2 = "ros"
+   * 输出：3
+   * 解释：
+   * horse -> rorse (将 'h' 替换为 'r')
+   * rorse -> rose (删除 'r')
+   * rose -> ros (删除 'e')
+   * 示例 2：
+   *
+   * 输入：word1 = "intention", word2 = "execution"
+   * 输出：5
+   * 解释：
+   * intention -> inention (删除 't')
+   * inention -> enention (将 'i' 替换为 'e')
+   * enention -> exention (将 'n' 替换为 'x')
+   * exention -> exection (将 'n' 替换为 'c')
+   * exection -> execution (插入 'u')
+   * @param word1
+   * @param word2
+   * @return
+   */
+  public int minDistance(String word1, String word2) {
+     char []w1 = word1.toCharArray();
+     char []w2 = word2.toCharArray();
+    return minDistance(w1,w2,w1.length-1,w2.length-1);
+  }
+  public int minDistance(char[] word1,char[] word2,int i, int j){
+     if(i == -1) return j+1;
+     if(j == -1) return i+1;
+     if(word1[i] == word2[j]) {
+       return minDistance(word1,word2,i-1,j-1);
+     }else{
+       return Math.min(minDistance(word1,word2,i-1,j)+1,
+               Math.min(minDistance(word1,word2,i,j-1)+1,minDistance(word1,word2,i-1,j-1)+1));
+     }
+  }
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
-    int[] a1 = {1,2,5};
-    System.out.println(dynamicProgramming.coinChangeDP(a1, 11));
+    String s1 = "intention";
+    String s2 = "execution";
+    System.out.println(dynamicProgramming.minDistance(s1,s2));
   }
 
 }
