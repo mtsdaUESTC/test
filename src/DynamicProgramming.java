@@ -1,5 +1,3 @@
-
-
 import java.util.*;
 
 /**
@@ -76,6 +74,7 @@ public class DynamicProgramming {
     }
     return (dp[amount] == amount+1)? -1: dp[amount];
   }
+
   /**leetCode 300 最长上升子序列
    * 给定一个无序的整数数组，找到其中最长上升子序列的长度。
    * 示例:
@@ -136,21 +135,71 @@ public class DynamicProgramming {
    * @param word2
    * @return
    */
+  HashMap<String,Integer> map2 = new HashMap<>();
+
   public int minDistance(String word1, String word2) {
      char []w1 = word1.toCharArray();
      char []w2 = word2.toCharArray();
     return minDistance(w1,w2,w1.length-1,w2.length-1);
   }
+
+  /**
+   * 备忘录+递归的形式处理子问题
+   * @param word1
+   * @param word2
+   * @param i
+   * @param j
+   * @return
+   */
   public int minDistance(char[] word1,char[] word2,int i, int j){
+    if (map2.containsKey(i+","+j)){
+      return map2.get(i+","+j);
+    }
      if(i == -1) return j+1;
      if(j == -1) return i+1;
      if(word1[i] == word2[j]) {
-       return minDistance(word1,word2,i-1,j-1);
+       int res = minDistance(word1,word2,i-1,j-1);
+       map2.put(i+","+j,res);
+       return res;
      }else{
-       return Math.min(minDistance(word1,word2,i-1,j)+1,
+       int res = Math.min(minDistance(word1,word2,i-1,j)+1,
                Math.min(minDistance(word1,word2,i,j-1)+1,minDistance(word1,word2,i-1,j-1)+1));
+       map2.put(i+","+j,res);
+       return res;
      }
   }
+
+  /**
+   * 用完全动态规划的方式解决编辑距离问题
+   * @param s1
+   * @param s2
+   * @return
+   */
+  public int minDistanceDp(String s1,String s2) {
+    int m = s1.length(),n = s2.length();
+    int [][]dp = new int[m+1][n+1];
+    for(int i = 1;i <= m;i++) {
+      dp[i][0] = i;
+    }
+    for(int j = 1;j <= n;j++) {
+      dp[0][j] = j;
+    }
+    //自底向上求解
+    for(int i = 1;i<=m;i++){
+      for(int j = 1;j<=n;j++){
+        if(s1.charAt(i-1) == s2.charAt(j-1)){
+          dp[i][j] = dp[i-1][j-1];
+        }else{
+          dp[i][j] = min(dp[i-1][j]+1,dp[i][j-1]+1, dp[i-1][j-1]+1);
+        }
+      }
+    }
+    return dp[m][n];
+  }
+  public int min(int a,int b,int c){
+    return Math.min(a,Math.min(b, c));
+  }
+
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
     String s1 = "intention";
