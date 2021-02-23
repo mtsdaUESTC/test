@@ -43,7 +43,7 @@ public class SlidingWindow {
             right ++;
             if (need.containsKey(c)) {
                 window.put(c,window.getOrDefault(c,0)+1);
-                if (window.get(c) == need.get(c)) valid ++;
+                if (window.get(c) .equals(need.get(c))) valid ++;
             }
 
             while (valid == need.size()) {
@@ -54,13 +54,13 @@ public class SlidingWindow {
                 char d = sChars[left];
                 left ++;
                 if (need.containsKey(d)) {
-                    if(window.get(d) == need.get(d))
+                    if(window.get(d).equals(need.get(d)))
                         valid --;
                     window.put(d,window.get(d)-1);
                 }
             }
         }
-        return len == Integer.MAX_VALUE ? "" : s.substring(start,start+len-1);
+        return len == Integer.MAX_VALUE ? "" : s.substring(start,start+len);
     }
 
     public static void main(String[] args) {
