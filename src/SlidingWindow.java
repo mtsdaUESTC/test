@@ -118,6 +118,47 @@ public class SlidingWindow {
     }
 
     /**
+     * leetcode 159 至多包含两个不同字符的最长子串
+     * 给定一个字符串 s ，找出 至多 包含两个不同字符的最长子串 t ，并返回该子串的长度。
+     *
+     * 示例 1:
+     *
+     * 输入: "eceba"
+     * 输出: 3
+     * 解释: t 是 "ece"，长度为3。
+     * 示例 2:
+     *
+     * 输入: "ccaabbb"
+     * 输出: 5
+     * 解释: t 是 "aabbb"，长度为5。
+     *
+     * 链接：https://leetcode-cn.com/problems/longest-substring-with-at-most-two-distinct-characters
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        HashMap<Character, Integer> need = new HashMap<>();
+        char[] chars = s.toCharArray();
+        int left = 0, right = 0, len = 0;
+        while (right < chars.length) {
+            char c = chars[right];
+
+            need.put(c, need.getOrDefault(c, 0) + 1);
+            right++;
+            while (need.size() > 2) {
+                char d = chars[left];
+                if (need.get(d).equals(1)) {
+                    need.remove(d);
+                } else {
+                    need.put(d, need.get(d) - 1);
+                }
+                left++;
+            }
+            len = Math.max(right - left, len);
+        }
+        return len;
+    }
+    /**
      * leetcode 438 找到字符串中所有字母异位词
      * 给定一个字符串 s 和一个非空字符串 p，找到 s 中所有是 p 的字母异位词的子串，返回这些子串的起始索引。
      *
