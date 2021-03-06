@@ -103,7 +103,41 @@ public class DynamicProgramming {
     }
     return res;
   }
-
+  /**
+   * leetcode 354 俄罗斯套娃信封问题
+   *给你一个二维整数数组 envelopes ，其中 envelopes[i] = [wi, hi] ，表示第 i 个信封的宽度和高度。
+   *
+   * 当另一个信封的宽度和高度都比这个信封大的时候，这个信封就可以放进另一个信封里，如同俄罗斯套娃一样。
+   *
+   * 请计算 最多能有多少个 信封能组成一组“俄罗斯套娃”信封（即可以把一个信封放到另一个信封里面）。
+   *
+   * 注意：不允许旋转信封。
+   *
+   *  
+   * 示例 1：
+   *
+   * 输入：envelopes = [[5,4],[6,4],[6,7],[2,3]]
+   * 输出：3
+   * 解释：最多信封的个数为 3, 组合为: [2,3] => [5,4] => [6,7]。
+   * 示例 2：
+   *
+   * 输入：envelopes = [[1,1],[1,1],[1,1]]
+   * 输出：1
+   * 链接：https://leetcode-cn.com/problems/russian-doll-envelopes
+   * @param envelopes
+   * @return
+   */
+  public int maxEnvelopes(int[][] envelopes) {
+    int n = envelopes.length;
+    Arrays.sort(envelopes,((o1, o2) -> {
+      return o1[0] == o2[0] ? o2[1]-o1[1] : o1[0]-o2[0];
+    }));
+    int [] height = new int[n];
+    for (int i = 0;i < n; i++) {
+      height[i] = envelopes [i][1];
+    }
+    return lengthOfLIS(height);
+  }
   /**编辑距离
    * 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
    *
@@ -245,6 +279,55 @@ public class DynamicProgramming {
     return res;
   }
 
+  /**
+   * leetcode 1143. 最长公共子序列
+   * 给定两个字符串 text1 和 text2，返回这两个字符串的最长公共子序列的长度。
+   *
+   * 一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+   * 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。两个字符串的「公共子序列」是这两个字符串所共同拥有的子序列。
+   *
+   * 若这两个字符串没有公共子序列，则返回 0。
+   *
+   * 示例 1:
+   *
+   * 输入：text1 = "abcde", text2 = "ace"
+   * 输出：3
+   * 解释：最长公共子序列是 "ace"，它的长度为 3。
+   * 示例 2:
+   *
+   * 输入：text1 = "abc", text2 = "abc"
+   * 输出：3
+   * 解释：最长公共子序列是 "abc"，它的长度为 3。
+   * 示例 3:
+   *
+   * 输入：text1 = "abc", text2 = "def"
+   * 输出：0
+   * 解释：两个字符串没有公共子序列，返回 0。
+   * @param text1
+   * @param text2
+   * @return
+   */
+  public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length();
+    int n = text2.length();
+    int [][] dp = new int[m+1][n+1];
+    for (int k = 0;k<m;k++) {
+      dp[k][0] = 0;
+    }
+    for (int l = 0;l<n;l++) {
+      dp[0][l] = 0;
+    }
+    for (int i = 1;i<= m;i++) {
+      for (int j = 1;j<= n;j++) {
+        if (text1.charAt(i-1) == text2.charAt(j-1)) {
+          dp[i][j] = dp[i-1][j-1] + 1;
+        }else {
+          dp[i][j] = Math.max(dp[i][j-1],dp[i-1][j]);
+        }
+      }
+    }
+    return dp[m][n];
+  }
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
     System.out.println(dynamicProgramming.superEggDrop(3,25));
