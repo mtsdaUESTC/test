@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * 动态规划
@@ -103,6 +104,7 @@ public class DynamicProgramming {
     }
     return res;
   }
+
   /**
    * leetcode 354 俄罗斯套娃信封问题
    *给你一个二维整数数组 envelopes ，其中 envelopes[i] = [wi, hi] ，表示第 i 个信封的宽度和高度。
@@ -138,6 +140,7 @@ public class DynamicProgramming {
     }
     return lengthOfLIS(height);
   }
+
   /**编辑距离
    * 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
    *
@@ -267,6 +270,7 @@ public class DynamicProgramming {
    * 输出：4
    */
   HashMap<String,Integer> eggMap = new HashMap<>();
+
   public int superEggDrop(int K, int N) {
     if (eggMap.containsKey(K+","+N)) return eggMap.get(K+","+N);
     if(K == 1) return N;
@@ -328,6 +332,57 @@ public class DynamicProgramming {
     }
     return dp[m][n];
   }
+
+  /**
+   * leetcode 516 最长回文子序列
+   * 516. 最长回文子序列
+   * 给定一个字符串 s ，找到其中最长的回文子序列，并返回该序列的长度。可以假设 s 的最大长度为 1000 。
+   *
+   * 示例 1:
+   * 输入:
+   *
+   * "bbbab"
+   * 输出:
+   *
+   * 4
+   * 一个可能的最长回文子序列为 "bbbb"。
+   *
+   * 示例 2:
+   * 输入:
+   *
+   * "cbbd"
+   * 输出:
+   *
+   * 2
+   * 一个可能的最长回文子序列为 "bb"。
+   *
+   *
+   * @param s
+   * @return
+   */
+  public int longestPalindromeSubseq(String s) {
+    int n = s.length();
+    int[][] dp = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        dp[i][j] = 0;
+      }
+    }
+    for (int i = 0; i < n; i++) {
+      dp[i][i] = 1;
+    }
+    for (int i = n - 2; i >= 0; i--) {
+      for (int j = i + 1; j < n; j++) {
+        if (s.charAt(i) == s.charAt(j)) {
+          dp[i][j] = dp[i + 1][j - 1] + 2;
+        } else {
+          dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+    return dp[0][n - 1];
+  }
+
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
     System.out.println(dynamicProgramming.superEggDrop(3,25));
