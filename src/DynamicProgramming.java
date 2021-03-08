@@ -425,7 +425,6 @@ public class DynamicProgramming {
     }
     return dp[0][n - 1];
   }
-
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
     System.out.println(dynamicProgramming.superEggDrop(3,25));
