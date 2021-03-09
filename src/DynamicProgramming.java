@@ -425,6 +425,99 @@ public class DynamicProgramming {
     }
     return dp[0][n - 1];
   }
+
+  /**
+   * leetcode 651 4键键盘
+   * 假设你有一个特殊的键盘包含下面的按键：
+   *
+   * Key 1: (A)：在屏幕上打印一个 'A'。
+   *
+   * Key 2: (Ctrl-A)：选中整个屏幕。
+   *
+   * Key 3: (Ctrl-C)：复制选中区域到缓冲区。
+   *
+   * Key 4: (Ctrl-V)：将缓冲区内容输出到上次输入的结束位置，并显示在屏幕上。
+   *
+   * 现在，你只可以按键 N 次（使用上述四种按键），请问屏幕上最多可以显示几个 'A'呢？
+   *
+   * 样例 1:
+   *
+   * 输入: N = 3
+   * 输出: 3
+   * 解释:
+   * 我们最多可以在屏幕上显示三个'A'通过如下顺序按键：
+   * A, A, A
+   *  
+   *
+   * 样例 2:
+   *
+   * 输入: N = 7
+   * 输出: 9
+   * 解释:
+   * 我们最多可以在屏幕上显示九个'A'通过如下顺序按键：
+   * A, A, A, Ctrl A, Ctrl C, Ctrl V, Ctrl V
+   * 链接：https://leetcode-cn.com/problems/4-keys-keyboard
+   * @param N
+   */
+  public int maxA(int N) {
+    int[] dp = new int[N + 1];
+    dp[0] = 0;
+    for (int i = 1; i <=N; i++) {
+      dp[i] = dp[i - 1] + 1;
+      for (int j = 2; j < i; j++) {
+        dp[i] = Math.max(dp[i], dp[j - 2] * (i - j + 1));
+      }
+    }
+    return dp[N];
+  }
+
+  /**
+   * leetcode 518 零钱兑换2
+   * 给定不同面额的硬币和一个总金额。写出函数来计算可以凑成总金额的硬币组合数。假设每一种面额的硬币有无限个。 
+   *
+   *  
+   *
+   * 示例 1:
+   *
+   * 输入: amount = 5, coins = [1, 2, 5]
+   * 输出: 4
+   * 解释: 有四种方式可以凑成总金额:
+   * 5=5
+   * 5=2+2+1
+   * 5=2+1+1+1
+   * 5=1+1+1+1+1
+   * 示例 2:
+   *
+   * 输入: amount = 3, coins = [2]
+   * 输出: 0
+   * 解释: 只用面额2的硬币不能凑成总金额3。
+   * 示例 3:
+   *
+   * 输入: amount = 10, coins = [10]
+   * 输出: 1
+   *
+   * 链接：https://leetcode-cn.com/problems/coin-change-2
+   * @param amount
+   * @param coins
+   * @return
+   */
+  public int change(int amount, int[] coins) {
+    int n = coins.length;
+    int[][] dp = new int[n + 1][amount + 1];
+    for (int i = 0; i <= n; i++) {
+      dp[i][0] = 1;
+    }
+    for (int i = 1; i <= n; i++) {
+      for (int j = 1; j <= amount; j++) {
+        if (j - coins[i - 1] >= 0) {
+          dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i - 1]];
+        } else {
+          dp[i][j] = dp[i - 1][j];
+        }
+      }
+    }
+    return dp[n][amount];
+  }
   public static void main(String[] args) {
     DynamicProgramming dynamicProgramming = new DynamicProgramming();
     System.out.println(dynamicProgramming.superEggDrop(3,25));
